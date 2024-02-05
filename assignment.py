@@ -4,6 +4,10 @@ from flask_cors import CORS
 import requests
 from collections import Counter
 from bs4 import BeautifulSoup  # Import BeautifulSoup
+import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords
+
 
 
 # Create a Flask application instance
@@ -70,8 +74,14 @@ def analyze_word_frequency(article_text, n):
     # Split the article text into words
     words = article_text.split()
 
+        # Use Counter to count the frequency of each word
+
+        # Remove stopwords
+    stop_words = set(stopwords.words('english'))
+    filtered_words = [word.lower() for word in words if word.isalpha() and word.lower() not in stop_words]
+
+    word_frequency = Counter(filtered_words).most_common(n)
     # Use Counter to count the frequency of each word
-    word_frequency = Counter(words).most_common(n)
 
     return word_frequency
 
